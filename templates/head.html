@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="UTF-8">
+    <title>世界图书馆</title>
+    {#  用这中方式可以比较科学的加载静态文件  #}
+    <link rel="stylesheet" href="{% static 'css/statics.css' %}">
+    <script type="text/javascript" src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+</head>
+<body>
+    <header>
+        <ul class="head">
+            <li><a href="/">首页</a></li>
+            <li><a href="{% url 'book' %}">书库</a></li>
+            <li><a href="{% url 'disc:disc_index' %}">讨论区</a></li>
+        </ul>
+    </header>

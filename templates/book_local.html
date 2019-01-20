@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+    <form action="{% url 'add_sever_book' %}" method="post">
+    <table>
+    <tr>
+    <td>
+        <label>图书名字</label>
+    </td>
+    <td>
+    <input type="text" name="book_name" value="{{ data.1 }}" />
+    </td>
+    </tr>
+    <tr>
+        <td>
+            <label>图书作者</label>
+        </td>
+        <td>
+            <input type="text" name="author" value="{{ data.2 }}"/>
+        </td>
+    </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit"  value="提交"/></td>
+        </tr>
+    </table>
+    </form>
+    <input type="text" name="cname">
+    <input type="submit" onclick="add_bo()"  value="提交"/></td>
+{% endblock %}
+{% block script %}
+ <script>
+ //测试用ajax
+function add_bo() {
+    data={
+        'name':$("input[name=cname]").val(),
+    }
+    $.ajax({
+        type:"POST",
+        url:{% url 'ajax_data' %},
+        data:data,
+        dataType:"json",
+        success:function (res) {
+            console.log(res)
+        }
+    })
+}
+ </script>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div>
+        网站前端首页
+        {#  这个变量可用使用父模板中块元素的东西      #}
+        {{ block.super }}
+    </div>
+{% endblock  %}

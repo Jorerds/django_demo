@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>世界管理系统——后台</title>
+    <style>
+        .nav{
+            overflow: hidden;
+        }
+        .nav li{
+            float: left;
+            list-style: none;
+            margin: 0 20px;
+        }
+    </style>
+</head>
+<body>
+    <ul class="nav">
+        {#  用url可对url进行跳转  #}
+        <li><a href="{% url 'frot:index' %}">前端首页</a></li> <!-- app子urls跳转方法 -->
+        <li><a href="{% url 'frot:login' %}">前端登陆页面</a></li>
+        <li><a href="{% url 'book' %}">书列表页面</a></li> <!-- 项目urls跳转方法 需要给url规则设定name属性 -->
+        <li><a href="{% url 'book_detail' book_id='50' %}">点击量最高的一本书</a></li> <!-- url传参的写法后面直接接上这个url的变量就可以了 -->
+        <li><a href="{% url 'cms:index'  %}?user_id={{ 1 }}">切换管理员账号</a></li> <!-- 如果传递参数不是在urls规则上的 就需要直接写在url模板标签后面接上 -->
+    </ul>
+    app模板文件夹后端首页 当前登陆帐号：{{ user_id }}
+    <br/>
+   （传递对象到模板）用户名：{{ user_name.user_name }}
+    <br/>
+    <b>性别（字典中的字典在模板显示方式）：{{ messg.sex}}</b>
+    <br/>
+    <b>年龄（字典中的字典在模板显示方式）：{{ messg.age }}</b>
+    <br/>
+    <b>爱好（列表的模板显示方式，不能在DTL中不能使用中括号来表示下标）：{{ hobby.0 }}</b>
+        <ul>
+{#     模板遍历列表，在被遍历的列表后面加上 reversed 可进行列表反转    #}
+            {% for i in hobby  %}
+                <li>序号：{{ forloop.counter }}内容：{{ i }}</li>
+            {% endfor %}
+        </ul>
+
+{#    {% for i in hobby|slice:"1:" %}#}
+{#        <br/><b>{{ i }}</b>#}
+{#    {% endfor %}#}
+
+<table>
+    <tr>
+        <td>序号</td>
+        <td>单位</td>
+        <td>职位</td>
+        <td>所在单位时间</td>
+    </tr>
+{#在模板中可以用forloop.counter来获取没一行遍历的下标 默认是从1开始，如果想要从0开始用forloop.counter0 #}
+{# forloop.first 是否第一次遍历 forloop.last是否最后一次遍历 #}
+    {% for proj in projs %}
+    <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ proj.pj_name }}</td>
+            <td>{{ proj.pj_po }}</td>
+            <td>{{ proj.pj_num }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+<table>
+    <tr>
+        <td>评价</td>
+        <td>赞同</td>
+    </tr>
+{# empty 是用在for语句中如果遍历没有数据可以用他来控制无遍历输出 #}
+    {% for evt in evts %}
+        <td>{{ evt }}</td>
+    {% empty %}
+        暂时没有评价
+    {% endfor %}
+</table>
+<!-- add过滤器 -->
+<!-- add如果遇到两个数据可以转int类型的话会把两个数据相加，如果其中一个不能转int类型会直接字符串拼接 -->
+<p>{{ greet|add:"51" }}</p> <!--这里相当于执行了add(value,'51')-->
+<p>{{ add_view1|add:add_view2 }}</p> <!--add过滤器如果遇到了列表可以把列表合并成一个列表-->
+
+<!--cut过滤器-->
+<!-- 能够过滤掉变量中的字符-->
+    <p>原版：{{ cut_view }}</p><p>使用cut过滤器过滤掉空格字符：{{ cut_view|cut:' ' }}</p>
+
+<!--date过滤器-->
+<!--格式化时间日期-->
+<h1>{{ date_view|date:"Y-m-d H:i:s" }}</h1>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<table>
+{% for row in discs %}
+<tr>
+    <td>{{ row.title }}</td>
+    <td>{{ row.content }}</td>
+    <td>{{ row.c_time }}</td>
+    {#  想要取得该对应的外键数据 可以直接调用模型对象的形式  #}
+    <td>{{ row.fenle.fl_name }}</td>
+</tr>
+{% endfor %}
+</table>
+<textarea style="width: 250px;height: 180px;" name="content"></textarea>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}
