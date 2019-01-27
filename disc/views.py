@@ -1,9 +1,11 @@
 from django.shortcuts import render,redirect,reverse
-import datetime
 from django.http import  HttpResponse
 from django.utils.timezone import now,localtime
 # 如果要使用ORM模型来进行数据库的操作，必须要先导入数据库
 from .models import dj_disc,Fenle,Tag
+from datetime import datetime,time
+# 转换为aware时间的包引入
+from django.utils.timezone import make_aware
 # Create your views here.
 
 def disc_index(request):
@@ -90,6 +92,47 @@ def disc_index(request):
     disc9=dj_disc.objects.filter(title__istartswith='外键')
     print(disc9.query)
     print(disc9)
+
+    # 时间查询
+    # rabge 查询一个日期时间的区间(获取到的时间必须为一个aware时间，所以要用make_aware来转换)
+    start_time=make_aware(datetime(year=2019,month=1,day=5,hour=1,minute=0,second=0))
+    end_time=make_aware(datetime(year=2019,month=1,day=6,hour=22,minute=0,second=0))
+    disc10=dj_disc.objects.filter(c_time__range=(start_time,end_time))
+    print(disc10.query)
+    print(disc10)
+    # date 查询日期，可以是一个date时间或者是datetime
+    # 使用这个查询方法必须要给数据库添加数据库系统的时区数据
+    disc11=dj_disc.objects.filter(c_time__date=datetime(year=2019,month=1,day=6))
+    print(disc11.query)
+    print(disc11)
+    # year 按照某一年查找
+    # month 按照月份进行查找
+    # day 按照日进行查找
+    # 后面还可以接上 gt 这些对比查找
+    disc12=dj_disc.objects.filter(c_time__year=2019)
+    print(disc12.query)
+    print(disc12)
+    # week_day 按照星期进行查（注意：由于是使用国际的时间标准，所以1表示的是星期天，7是星期六，剩下的2-6才是星期一到星期五）
+    disc13=dj_disc.objects.filter(c_time__week_day=7)
+    print(disc13.query)
+    print(disc13)
+    # time 时间进行查找
+    # 注意：使用国际标准时间，所以要查找指定的时间需要加上当前时区，中国处于东八区所以要加上8
+    # time 时间查找由于秒是一个精确度的秒，所以最好是用区间查找
+    start_time1=time(hour=17,minute=5,second=6)
+    end_time1=time(hour=17,minute=5,second=7)
+    disc14=dj_disc.objects.filter(c_time__time__range=(start_time1,end_time1))
+    print(disc14.query)
+    print(disc14)
+    # isnull 判断某个值是否为空
+    disc15=dj_disc.objects.filter(fenle_id__isnull=True)
+    print(disc15.query)
+    print(disc15)
+    # regex和iregex 以正则表达的方式进行查找
+    # regex是区分大小写，iregex是不区分大小写
+    disc16=dj_disc.objects.filter(title__regex=r'[0-9]$')
+    print(disc16.query)
+    print(disc16)
 
 
 
