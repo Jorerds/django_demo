@@ -19,4 +19,10 @@
     {% endfor %}
 </table>
     <a href="{% url 'add_book' %}">添加图书</a>
+
+    <ul>
+    {% for book in books15 %}
+        <li>{{ book.name }}</li>
+    {% endfor %}
+    </ul>
 {% endblock %}
