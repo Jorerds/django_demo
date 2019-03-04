@@ -279,3 +279,4 @@ def add_book_ui(request):
 def ajax_data(request):
     name=request.POST.get('name')
     print(name)
+
